@@ -1,0 +1,100 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: rgb(172, 172, 172);
+    display: grid;
+    justify-items: center;
+    height: 100svh;
+}
+
+.container {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    grid-template-rows: 1fr 8fr;
+    gap: 50px
+}
+
+.container h1 {
+    align-self: flex-end
+}
+
+.grid {
+    align-self: flex-start;
+    grid-row: 2 / 3;
+    width: min(600px, 95vw);
+    aspect-ratio: 1 / 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 2%;
+    place-items: center;
+}
+
+.grid-cell {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    background-color: rgb(198, 198, 198);
+    place-items: center;
+}
+
+.grid-cell:first-child {
+    border-radius: 20px 0 0 0;
+}
+
+.grid-cell:nth-child(3) {
+    border-radius: 0px 20px 0 0;
+}
+
+.grid-cell:nth-child(7) {
+    border-radius: 0px 0px 0px 20px;
+}
+
+.grid-cell:last-child {
+    border-radius: 0px 0px 20px 0px;
+}
+
+.cell-btn {
+    display: none;
+    place-self: center;
+    width: 90%;
+    height: 90%;
+    background-color: rgb(217, 217, 217);
+    border: none;
+    border-radius: 15px;
+    place-items: center;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+
+.grid-cell:not(.occupied):hover .cell-btn {
+    display: grid;
+    opacity: 0.5;
+}
+
+.grid-cell.occupied .cell-btn {
+    display: grid;
+}
+
+svg {
+    opacity: 0.5;
+}
+
+.grid-cell.occupied svg {
+    opacity: 1;
+}
+
+.highlight {
+    border: 6px solid green;
+}
+
+.game-over .grid-cell:not(.occupied):hover .cell-btn {
+    display: none;
+}
