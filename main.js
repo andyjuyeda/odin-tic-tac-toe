@@ -117,6 +117,12 @@ function gameController(
   playerOneName = "Player One",
   playerTwoName = "Player Two"
 ) {
+  const interactionsDiv = document.querySelector(".interactions");
+  interactionsDiv.innerHTML = "";
+  let whoseTurnElement = document.createElement("h2");
+  whoseTurnElement.classList.add("whose-turn");
+  interactionsDiv.appendChild(whoseTurnElement);
+
   const board = gameBoard();
 
   const playerOne = player(playerOneName, "X");
@@ -125,7 +131,17 @@ function gameController(
 
   let activePlayer = playerTwo;
 
-  const whoseTurn = document.querySelector('.whose-turn')
+  const whoseTurn = document.querySelector(".whose-turn");
+
+  const resetHTML = () => {
+    let cellButtons = document.querySelectorAll('.cell-btn');
+    cellButtons.forEach(button => {
+        button.innerHTML = '';
+        button.classList.remove('highlight');
+        button.closest('.grid-cell').classList.remove('occupied');
+        button.closest('.grid').classList.remove('game-over');
+    })
+  }
 
   const switchPlayerTurn = () => {
     if (activePlayer == playerOne) {
@@ -142,28 +158,40 @@ function gameController(
   const playTurn = (row, column) => {
     const cell = board.getCell(row, column);
     if (cell.getValue() !== 0) {
-      return
+      return;
     }
     cell.markCell(activePlayer);
 
-
     const highlightWinningLine = (line) => {
-        line.forEach(([row, column]) => {
-          let cellButton = document.querySelector(`.cell-btn[data-row='${row}'][data-column='${column}']`);
-          cellButton.classList.add('highlight');  // Add a CSS class to change the appearance of the cell
-        });
-      };
+      line.forEach(([row, column]) => {
+        let cellButton = document.querySelector(
+          `.cell-btn[data-row='${row}'][data-column='${column}']`
+        );
+        cellButton.classList.add("highlight"); // Add a CSS class to change the appearance of the cell
+      });
+    };
 
     const result = board.checkWinner();
     if (result) {
       const winner = players.find((player) => player.marker === result.winner);
-      whoseTurn.textContent = `${winner.name} wins!`
+      whoseTurn.textContent = `${winner.name} wins!`;
       highlightWinningLine(result.line); // New function to highlight the winning line
-      document.querySelector('.grid').classList.add('game-over');
-      return;
+      document.querySelector(".grid").classList.add("game-over");
+      let resetButton = document.createElement("button");
+      resetButton.textContent = "Play Again";
+      interactionsDiv.appendChild(resetButton);
+      resetButton.addEventListener("click", () => {
+        resetHTML();      
+        let cellButtons = document.querySelectorAll('.cell-btn');
+      
+        cellButtons.forEach((button) => {
+          let clone = button.cloneNode(true);
+          button.parentNode.replaceChild(clone, button);
+        });
+        gameController();
+      });
+      
     }
-
-
 
     switchPlayerTurn();
   };
