@@ -125,6 +125,8 @@ function gameController(
 
   let activePlayer = playerTwo;
 
+  const whoseTurn = document.querySelector('.whose-turn')
+
   const switchPlayerTurn = () => {
     if (activePlayer == playerOne) {
       activePlayer = playerTwo;
@@ -133,15 +135,8 @@ function gameController(
     }
     if (!board.isFull()) {
       applyMarkers();
-      return newTurn(activePlayer);
+      whoseTurn.textContent = `It's ${activePlayer.name}'s turn!`;
     }
-  };
-
-  const newTurn = (activePlayer) => {
-    console.log(
-      `It is ${activePlayer.name}'s turn. Where would you like to mark?`
-    );
-    board.logBoardState();
   };
 
   const playTurn = (row, column) => {
@@ -162,7 +157,7 @@ function gameController(
     const result = board.checkWinner();
     if (result) {
       const winner = players.find((player) => player.marker === result.winner);
-      console.log(`${winner.name} wins!`);
+      whoseTurn.textContent = `${winner.name} wins!`
       highlightWinningLine(result.line); // New function to highlight the winning line
       document.querySelector('.grid').classList.add('game-over');
       return;
