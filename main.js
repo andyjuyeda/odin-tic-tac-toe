@@ -109,8 +109,8 @@ function Cell() {
   return { markCell, getValue };
 }
 
-const player = (name, marker) => {
-  return { name, marker };
+const player = (name, marker, color) => {
+  return { name, marker, color };
 };
 
 function gameController(
@@ -118,30 +118,49 @@ function gameController(
   playerTwoName = "Player Two"
 ) {
   const interactionsDiv = document.querySelector(".interactions");
-  interactionsDiv.innerHTML = "";
+//   interactionsDiv.innerHTML = "";
   let whoseTurnElement = document.createElement("h2");
   whoseTurnElement.classList.add("whose-turn");
   interactionsDiv.appendChild(whoseTurnElement);
 
   const board = gameBoard();
 
-  const playerOne = player(playerOneName, "X");
-  const playerTwo = player(playerTwoName, "O");
+  const colors = [
+    "#08D9D6",
+    "#FF2E63",
+    "#6528F7",
+    "#00DFA2",
+    "#FFD93D",
+    "#332FD0",
+    "#FF4949",
+  ];
+
+  function getRandomColor() {
+    const index = Math.floor(Math.random() * colors.length);
+    let color = colors[index];
+    colors.splice(index, 1);
+    return color;
+  }
+
+  let playerOne = player(playerOneName, "X", getRandomColor());
+  let playerTwo = player(playerTwoName, "O", getRandomColor());
   const players = [playerOne, playerTwo];
 
   let activePlayer = playerTwo;
 
-  const whoseTurn = document.querySelector(".whose-turn");
+  let whoseTurn = document.querySelector(".whose-turn");
 
   const resetHTML = () => {
-    let cellButtons = document.querySelectorAll('.cell-btn');
-    cellButtons.forEach(button => {
-        button.innerHTML = '';
-        button.classList.remove('highlight');
-        button.closest('.grid-cell').classList.remove('occupied');
-        button.closest('.grid').classList.remove('game-over');
-    })
-  }
+    let cellButtons = document.querySelectorAll(".cell-btn");
+    cellButtons.forEach((button) => {
+      button.innerHTML = "";
+      button.classList.remove("highlight");
+      button.closest(".grid-cell").classList.remove("occupied");
+      button.closest(".grid").classList.remove("game-over");
+    });
+    let resetButton = document.querySelector('button');
+    resetButton.remove();
+  };
 
   const switchPlayerTurn = () => {
     if (activePlayer == playerOne) {
@@ -181,25 +200,24 @@ function gameController(
       resetButton.textContent = "Play Again";
       interactionsDiv.appendChild(resetButton);
       resetButton.addEventListener("click", () => {
-        resetHTML();      
-        let cellButtons = document.querySelectorAll('.cell-btn');
-      
+        resetHTML();
+        let cellButtons = document.querySelectorAll(".cell-btn");
+
         cellButtons.forEach((button) => {
           let clone = button.cloneNode(true);
           button.parentNode.replaceChild(clone, button);
         });
         gameController();
       });
-      
+    } else {
+      switchPlayerTurn();
     }
-
-    switchPlayerTurn();
   };
 
   const applyMarkers = () => {
-    let svgCircle = `<svg fill="#000000" height="75%" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-19.8 -19.8 369.60 369.60" xml:space="preserve" stroke="#000000" stroke-width="33"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path id="XMLID_520_" d="M165,0C74.019,0,0,74.019,0,165s74.019,165,165,165s165-74.019,165-165S255.982,0,165,0z M165,300 C90.561,300,30,239.44,30,165S90.561,30,165,30c74.439,0,135,60.561,135,135S239.439,300,165,300z"></path></g></svg>`;
+    let svgCircle = `<svg fill="#FFFFFF" height="75%" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-19.8 -19.8 369.60 369.60" xml:space="preserve" stroke="${playerTwo.color}" stroke-width="33"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path id="XMLID_520_" d="M165,0C74.019,0,0,74.019,0,165s74.019,165,165,165s165-74.019,165-165S255.982,0,165,0z M165,300 C90.561,300,30,239.44,30,165S90.561,30,165,30c74.439,0,135,60.561,135,135S239.439,300,165,300z"></path></g></svg>`;
 
-    let svgX = `<svg viewBox="0 0 1024.00 1024.00" height="95%" xmlns="http://www.w3.org/2000/svg" fill="#000000" stroke="#000000" stroke-width="51.2"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#000000" d="M195.2 195.2a64 64 0 0 1 90.496 0L512 421.504 738.304 195.2a64 64 0 0 1 90.496 90.496L602.496 512 828.8 738.304a64 64 0 0 1-90.496 90.496L512 602.496 285.696 828.8a64 64 0 0 1-90.496-90.496L421.504 512 195.2 285.696a64 64 0 0 1 0-90.496z"></path></g></svg>`;
+    let svgX = `<svg viewBox="0 0 1024.00 1024.00" height="95%" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF" stroke="${playerOne.color}" stroke-width="51.2"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="${playerOne.color}" d="M195.2 195.2a64 64 0 0 1 90.496 0L512 421.504 738.304 195.2a64 64 0 0 1 90.496 90.496L602.496 512 828.8 738.304a64 64 0 0 1-90.496 90.496L512 602.496 285.696 828.8a64 64 0 0 1-90.496-90.496L421.504 512 195.2 285.696a64 64 0 0 1 0-90.496z"></path></g></svg>`;
     let cellButtons = document.querySelectorAll(
       ".grid-cell:not(.occupied) .cell-btn"
     );
@@ -228,3 +246,8 @@ function gameController(
 }
 
 gameController();
+
+const darkModeToggle = document.querySelector('.dark-mode-toggle');
+darkModeToggle.addEventListener('click', (e) => {
+    e.target.closest('body').classList.toggle('dark-mode');
+})
