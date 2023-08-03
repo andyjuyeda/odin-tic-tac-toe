@@ -163,12 +163,14 @@ svg {
     align-self: flex-start;
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 10px;
 }
 
 .interactions button {
     font-family: 'Poppins', sans-serif;
     border: none;
+    width: 12rem;
     height: 3rem;
     border-radius: 99px;
     font-size: 1.3rem;
@@ -179,6 +181,7 @@ svg {
     background-color: var(--bg);
     border: 3px solid rgb(21, 214, 130);
     color: var(--text-color);
+    transition: all 0.3s ease;
 }
 
 .interactions button:hover {

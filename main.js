@@ -118,7 +118,7 @@ function gameController(
   playerTwoName = "Player Two"
 ) {
   const interactionsDiv = document.querySelector(".interactions");
-//   interactionsDiv.innerHTML = "";
+  //   interactionsDiv.innerHTML = "";
   let whoseTurnElement = document.createElement("h2");
   whoseTurnElement.classList.add("whose-turn");
   interactionsDiv.appendChild(whoseTurnElement);
@@ -158,7 +158,7 @@ function gameController(
       button.closest(".grid-cell").classList.remove("occupied");
       button.closest(".grid").classList.remove("game-over");
     });
-    let resetButton = document.querySelector('button');
+    let resetButton = document.querySelector("button");
     resetButton.remove();
   };
 
@@ -191,10 +191,17 @@ function gameController(
     };
 
     const result = board.checkWinner();
-    if (result) {
-      const winner = players.find((player) => player.marker === result.winner);
-      whoseTurn.textContent = `${winner.name} wins!`;
-      highlightWinningLine(result.line); // New function to highlight the winning line
+
+    if (result || board.isFull()) {
+      if (result) {
+        const winner = players.find(
+          (player) => player.marker === result.winner
+        );
+        whoseTurn.textContent = `${winner.name} wins!`;
+        highlightWinningLine(result.line);
+      } else {
+        whoseTurn.textContent = "It's a tie!";
+      }
       document.querySelector(".grid").classList.add("game-over");
       let resetButton = document.createElement("button");
       resetButton.textContent = "Play Again";
@@ -247,7 +254,7 @@ function gameController(
 
 gameController();
 
-const darkModeToggle = document.querySelector('.dark-mode-toggle');
-darkModeToggle.addEventListener('click', (e) => {
-    e.target.closest('body').classList.toggle('dark-mode');
-})
+const darkModeToggle = document.querySelector(".dark-mode-toggle");
+darkModeToggle.addEventListener("click", (e) => {
+  e.target.closest("body").classList.toggle("dark-mode");
+});
