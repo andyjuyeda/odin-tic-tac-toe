@@ -118,7 +118,7 @@ function gameController(
   playerTwoName = "Player Two"
 ) {
   const interactionsDiv = document.querySelector(".interactions");
-  //   interactionsDiv.innerHTML = "";
+  interactionsDiv.innerHTML = "";
   let whoseTurnElement = document.createElement("h2");
   whoseTurnElement.classList.add("whose-turn");
   interactionsDiv.appendChild(whoseTurnElement);
