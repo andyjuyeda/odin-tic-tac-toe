@@ -69,9 +69,11 @@ body.dark-mode div .bi-moon-stars-fill {
 .title h1:first-child {
     color: #6528F7
 }
+
 .title h1:nth-child(2) {
     color: #0ad8c4
 }
+
 .title h1:last-child {
     color: #FE346E
 }
@@ -79,7 +81,7 @@ body.dark-mode div .bi-moon-stars-fill {
 .grid {
     align-self: center;
     grid-row: 2 / 3;
-    width: min(600px, 95vw);
+    width: min(600px, 85vw);
     aspect-ratio: 1 / 1;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -87,7 +89,7 @@ body.dark-mode div .bi-moon-stars-fill {
     gap: 2%;
     place-items: center;
     border-radius: 20px;
-    
+
 }
 
 .grid-cell {
